@@ -54,6 +54,10 @@
 #include "bzlib.h"
 #endif
 
+#ifndef __GLIBC__
+#include <time.h>
+#endif
+
 #define Z_BZIP2ED 12
 
 #if defined(STRICTZIP) || defined(STRICTZIPUNZIP)

@@ -106,6 +106,9 @@ unzseek() was added by stgatilov so that uncompressed files can be freely seeked
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#ifndef __GLIBC__
+#include <time.h>
+#endif
 typedef unsigned char byte;
 #define ID_TIME_T time_t
 #include "../sys/sys_public.h" //"sys/platform.h"

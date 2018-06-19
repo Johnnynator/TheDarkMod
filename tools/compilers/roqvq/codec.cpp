@@ -19,6 +19,10 @@
 
 #include "codec.h"
 
+#ifndef _HUGE_ENUF
+    #define _HUGE_ENUF 1e+300
+#endif
+
 #define INFINITY   ((float)(_HUGE_ENUF * _HUGE_ENUF))
 
 float glimit( const float val ) {
