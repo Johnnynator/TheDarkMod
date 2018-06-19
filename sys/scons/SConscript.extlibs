@@ -42,7 +42,8 @@ obj_list += SConscript( '../../sys/scons/SConscript.devil' )
 obj_list += SConscript( '../../sys/scons/SConscript.libjpeg' )
 obj_list += SConscript( '../../sys/scons/SConscript.libpng' )
 # stgatilov: we need only zlib code, because internal minizip uses it
-obj_list += SConscript( '../../sys/scons/SConscript.zlib' )
+if ( g_env_base['USE_SYSTEM_LIBS'] == '0' ):
+	obj_list += SConscript( '../../sys/scons/SConscript.zlib' )
 
 # Note: Unlike windows version, we built ExtLibs as static library,
 # because Linux forbids wrapping prebuilt static libraries into a shared library.

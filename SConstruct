@@ -15,7 +15,7 @@ conf_filename='site.conf'
 serialized=['CC', 'CXX', 'JOBS', 'BUILD', 'GL_HARDLINK',
 	'DEBUG_MEMORY', 'LIBC_MALLOC', 'ID_MCHECK', 'NOCURL',
 	'BUILD_ROOT', 'BASEFLAGS', 'SILENT', 'NO_GCH', 'OPENMP',
-	'TARGET_ARCH' ]
+	'TARGET_ARCH', 'USE_SYSTEM_LIBS' ]
 
 # ------------------------------------------------
 
@@ -89,6 +89,9 @@ ID_MCHECK (default 2)
 
 NOCURL (default 0)
 	set to 1 to disable usage of libcurl and http/ftp downloads feature
+
+USE_SYTEM_LIBS (default 0)
+	use System Libraries instead of the bundled ones
 """
 
 Help( help_string )
@@ -136,6 +139,7 @@ SILENT = '0'
 NO_GCH = '0'
 OPENMP = '0'
 TARGET_ARCH = 'x86'
+USE_SYSTEM_LIBS = '0'
 
 # end default settings ---------------------------
 
@@ -301,16 +305,17 @@ if ( ID_MCHECK == '1' ):
 	BASECPPFLAGS.append( '-DID_MCHECK' )
 	
 # create the build environements
-g_env_base = Environment( ENV = os.environ, CC = CC, CXX = CXX, LINK = LINK, CPPFLAGS = BASECPPFLAGS, LINKFLAGS = BASELINKFLAGS, CPPPATH = CORECPPPATH, LIBPATH = CORELIBPATH )
+g_env_base = Environment( ENV = os.environ, CC = CC, CXX = CXX, LINK = LINK, CPPFLAGS = BASECPPFLAGS, LINKFLAGS = BASELINKFLAGS, CPPPATH = CORECPPPATH, LIBPATH = CORELIBPATH, USE_SYSTEM_LIBS = USE_SYSTEM_LIBS )
 scons_utils.SetupUtils( g_env_base )
 
 g_env_base.Prepend(CPPPATH=['.'])
 g_env_base.Append(CPPPATH = '#/include')
-g_env_base.Append(CPPPATH = '#/include/zlib')
 g_env_base.Append(CPPPATH = '#/include/libjpeg')
 g_env_base.Append(CPPPATH = '#/include/libpng')
 g_env_base.Append(CPPPATH = '#/include/devil')
-g_env_base.Append(CPPPATH = '#/include/ffmpeg')
+if ( USE_SYSTEM_LIBS == '0' ):
+	g_env_base.Append(CPPPATH = '#/include/zlib')
+	g_env_base.Append(CPPPATH = '#/include/ffmpeg')
 g_env_base.Append(CPPPATH = '#/')
 
 g_env_base['CPPFLAGS'] += OPTCPPFLAGS
